@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import fr.iemxblog.gpstracker.Sms.sendSMS
@@ -26,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         buttonTest.setOnClickListener {
             sendSMS(editTextPhone.text.toString(), "test SMS", this)
         }
+
+        Log.i("TAG", "MESSAGE")
 
         val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
         if(permissionCheck != PackageManager.PERMISSION_GRANTED) {
