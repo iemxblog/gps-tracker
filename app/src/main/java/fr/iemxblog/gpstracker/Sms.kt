@@ -1,6 +1,5 @@
 package fr.iemxblog.gpstracker.Sms
 
-import android.Manifest
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
