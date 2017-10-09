@@ -14,7 +14,8 @@ import android.widget.EditText
 import fr.iemxblog.gpstracker.Sms.sendSMS
 
 enum class MyPermissions {
-    MY_PERMISSIONS_SEND_SMS
+    MY_PERMISSIONS_SEND_SMS,
+    MY_PERMISSIONS_RECEIVE_SMS
 }
 
 class MainActivity : AppCompatActivity() {
@@ -38,6 +39,9 @@ class MainActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), MyPermissions.MY_PERMISSIONS_SEND_SMS.ordinal)
         }
 
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECEIVE_SMS), MyPermissions.MY_PERMISSIONS_RECEIVE_SMS.ordinal)
+
         val myReceiver = SmsReceiver()
         this.registerReceiver(myReceiver, IntentFilter("android.provider.Telephony.SMS_RECEIVED"))
 
@@ -46,7 +50,11 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         val buttonTest: Button = findViewById(R.id.buttonTest) as Button
         when(requestCode) {
-            MyPermissions.MY_PERMISSIONS_SEND_SMS.ordinal -> buttonTest.isEnabled = true
+            MyPermissions.MY_PERMISSIONS_SEND_SMS.ordinal -> {
+                buttonTest.isEnabled = true
+                Log.i("MyPermissions", "Received SEND_SMS permission")
+            }
+            MyPermissions.MY_PERMISSIONS_RECEIVE_SMS.ordinal -> Log.i("MyPermissions", "Received RECEIVE_SMS permission")
         }
     }
 }
