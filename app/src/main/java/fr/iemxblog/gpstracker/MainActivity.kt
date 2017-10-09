@@ -1,9 +1,11 @@
 package fr.iemxblog.gpstracker
 
 import android.Manifest
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Telephony
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
@@ -35,6 +37,9 @@ class MainActivity : AppCompatActivity() {
             buttonTest.isEnabled = false
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), MyPermissions.MY_PERMISSIONS_SEND_SMS.ordinal)
         }
+
+        val myReceiver = SmsReceiver()
+        this.registerReceiver(myReceiver, IntentFilter("android.provider.Telephony.SMS_RECEIVED"))
 
     }
 
