@@ -38,8 +38,14 @@ class SmsReceiver : BroadcastReceiver() {
     }
 
     private fun checkSMS(SMS: String?, context: Context) {
-        if (SMS == "STOP") {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(this)
-        }
+        if (SMS == "stopService")
+            broadcastMessage(context, "stopService")
+    }
+
+    private fun broadcastMessage(context: Context, msg: String) {
+        Log.d(TAG, "Broadcasting message")
+        val intent = Intent("lockMyPhone")
+        intent.putExtra("message", msg)
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
     }
 }
