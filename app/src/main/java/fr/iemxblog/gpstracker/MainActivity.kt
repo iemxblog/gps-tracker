@@ -24,23 +24,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val editTextPhone: EditText = findViewById(R.id.editTextPhone) as EditText
-        val buttonTest: Button = findViewById(R.id.buttonTest) as Button
+        val editTextPhone = findViewById(R.id.editTextPhone) as EditText
+        val editTextPass = findViewById(R.id.editTextPass) as EditText
+        val buttonUnlock = findViewById(R.id.buttonUnlock) as Button
+        val buttonStart = findViewById(R.id.buttonStart) as Button
+        val buttonStop = findViewById(R.id.buttonStop) as Button
 
-        buttonTest.setOnClickListener {
-            sendSMS(editTextPhone.text.toString(), "test SMS", this)
+        buttonUnlock.setOnClickListener {
+
         }
 
-        Log.i("TAG", "MESSAGE")
+        buttonStart.setOnClickListener {
 
-        val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
-        if(permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            buttonTest.isEnabled = false
+        }
+
+        buttonStop.setOnClickListener {
+
+        }
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            Log.i("MyPermissions", "Requesting SEND_SMS permission")
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.SEND_SMS), MyPermissions.MY_PERMISSIONS_SEND_SMS.ordinal)
         }
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED)
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+            Log.i("MyPermissions", "Requesting RECEIVE_SMS permission")
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECEIVE_SMS), MyPermissions.MY_PERMISSIONS_RECEIVE_SMS.ordinal)
+        }
 
         val myReceiver = SmsReceiver()
         this.registerReceiver(myReceiver, IntentFilter("android.provider.Telephony.SMS_RECEIVED"))
@@ -48,12 +58,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        val buttonTest: Button = findViewById(R.id.buttonTest) as Button
         when(requestCode) {
-            MyPermissions.MY_PERMISSIONS_SEND_SMS.ordinal -> {
-                buttonTest.isEnabled = true
-                Log.i("MyPermissions", "Received SEND_SMS permission")
-            }
+            MyPermissions.MY_PERMISSIONS_SEND_SMS.ordinal -> Log.i("MyPermissions", "Received SEND_SMS permission")
             MyPermissions.MY_PERMISSIONS_RECEIVE_SMS.ordinal -> Log.i("MyPermissions", "Received RECEIVE_SMS permission")
         }
     }
